@@ -1,43 +1,551 @@
 {
-    "profiveUser": [{
-        "id": 1,
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "password": "password123",
-        "status": true,
-        "role": "USER"
-    }, {
-        "id": 2,
-        "firstName": "Jane",
-        "lastName": "Smith",
-        "email": "jane.smith@example.com",
-        "password": "password456",
-        "status": true,
-        "role": "USER"
-    }, {
-        "id": 3,
-        "firstName": "Alice",
-        "lastName": "Johnson",
-        "email": "alice.johnson@example.com",
-        "password": "password789",
-        "status": false,
-        "role": "USER"
-    }, {
-        "id": 4,
-        "firstName": "Bob",
-        "lastName": "Brown",
-        "email": "bob.brown@example.com",
-        "password": "password321",
-        "status": true,
-        "role": "ADMIN"
-    }, {
-        "id": 5,
-        "firstName": "Charlie",
-        "lastName": "Davis",
-        "email": "charlie.davis@example.com",
-        "password": "password654",
-        "status": false,
-        "role": "USER"
-    }]
+  "profiveUser": [
+    {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "password": "password456",
+      "status": true,
+      "role": "USER"
+    },
+    {
+      "id": 3,
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "email": "alice.johnson@example.com",
+      "password": "password789",
+      "status": false,
+      "role": "USER"
+    },
+    {
+      "id": 4,
+      "firstName": "Bob",
+      "lastName": "Brown",
+      "email": "bob.brown@example.com",
+      "password": "password321",
+      "status": true,
+      "role": "ADMIN"
+    },
+    {
+      "id": 5,
+      "firstName": "Charlie",
+      "lastName": "Davis",
+      "email": "charlie.davis@example.com",
+      "password": "password654",
+      "status": false,
+      "role": "USER"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "title": "khoá học luyện thi THPT",
+      "description": "khóa học luyện thi cho học sinh chuẩn bị thi THPT"
+    },
+    {
+      "id": 2,
+      "title": "khoá học luyện thi ĐGNL",
+      "description": "khóa học luyện thi cho học sinh chuẩn bị thi đại học"
+    },
+    {
+      "id": 3,
+      "title": "khoá học luyện thi cho lớp 6",
+      "description": "khóa học luyện thi cho học sinh lớp 6"
+    },
+    {
+      "id": 4,
+      "title": "khoá học luyện thi cho lớp 7",
+      "description": "khóa học luyện thi cho học sinh lớp 7"
+    },
+    {
+      "id": 5,
+      "title": "khoá học luyện thi cho lớp 8",
+      "description": "khóa học luyện thi cho học sinh lớp 8"
+    },
+    {
+      "id": 6,
+      "title": "khoá học luyện thi cho lớp 9",
+      "description": "khóa học luyện thi cho học sinh lớp 9"
+    },
+    {
+      "id": 7,
+      "title": "khoá học luyện thi cho lớp 10",
+      "description": "khóa học luyện thi cho học sinh lớp 10"
+    },
+    {
+      "id": 8,
+      "title": "khoá học luyện thi cho lớp 11",
+      "description": "khóa học luyện thi cho học sinh lớp 11"
+    },
+    {
+      "id": 9,
+      "title": "khoá học luyện thi cho lớp 12",
+      "description": "khóa học luyện thi cho học sinh lớp 12"
+    }
+  ],
+  "examSubject": [
+    {
+      "id": 1,
+      "title": "môn toán",
+      "description": "luyện thi đại học",
+      "coursesId": 1
+    },
+    {
+      "id": 2,
+      "title": "môn toán",
+      "description": "luyện thi ĐGNL",
+      "coursesId": 2
+    },
+    {
+      "id": 3,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 6",
+      "coursesId": 3
+    },
+    {
+      "id": 4,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 7",
+      "coursesId": 4
+    },
+    {
+      "id": 5,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 8",
+      "coursesId": 5
+    },
+    {
+      "id": 6,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 9",
+      "coursesId": 6
+    },
+    {
+      "id": 7,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 10",
+      "coursesId": 7
+    },
+    {
+      "id": 8,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 11",
+      "coursesId": 8
+    },
+    {
+      "id": 9,
+      "title": "môn toán",
+      "description": "luyện thi cho học sinh lớp 12",
+      "coursesId": 9
+    },
+    {
+      "id": 10,
+      "title": "môn lý",
+      "description": "luyện thi đại học",
+      "coursesId": 1
+    },
+    {
+      "id": 11,
+      "title": "môn lý",
+      "description": "luyện thi ĐGNL",
+      "coursesId": 2
+    },
+    {
+      "id": 12,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 6",
+      "coursesId": 3
+    },
+    {
+      "id": 13,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 7",
+      "coursesId": 4
+    },
+    {
+      "id": 14,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 8",
+      "coursesId": 5
+    },
+    {
+      "id": 15,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 9",
+      "coursesId": 6
+    },
+    {
+      "id": 16,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 10",
+      "coursesId": 7
+    },
+    {
+      "id": 17,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 11",
+      "coursesId": 8
+    },
+    {
+      "id": 18,
+      "title": "môn lý",
+      "description": "luyện thi cho học sinh lớp 12",
+      "coursesId": 9
+    }
+  ],
+  "exams": [
+    {
+      "id": 1,
+      "title": "đề chuyên toán Trường THPT Lê Quý Đôn",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 1
+    },
+    {
+      "id": 2,
+      "title": "đề chuyên toán Trường THPT Nguyễn Huệ",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 2
+    },
+    {
+      "id": 3,
+      "title": "đề toán lớp 6 Trường THCS Chu Văn An",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 3
+    },
+    {
+      "id": 4,
+      "title": "đề toán lớp 7 Trường THCS Trần Đại Nghĩa",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 4
+    },
+    {
+      "id": 5,
+      "title": "đề toán lớp 8 Trường THCS Nguyễn Tri Phương",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 5
+    },
+    {
+      "id": 6,
+      "title": "đề toán lớp 9 Trường THCS Hồng Bàng",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 6
+    },
+    {
+      "id": 7,
+      "title": "đề toán lớp 10 Trường THPT Trưng Vương",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 7
+    },
+    {
+      "id": 8,
+      "title": "đề toán lớp 11 Trường THPT Phan Đình Phùng",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 8
+    },
+    {
+      "id": 9,
+      "title": "đề toán lớp 12 Trường THPT Gia Định",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 9
+    },
+    {
+      "id": 10,
+      "title": "đề chuyên lý Trường THPT Lê Quý Đôn",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 10
+    },
+    {
+      "id": 11,
+      "title": "đề chuyên lý Trường THPT Nguyễn Huệ",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 11
+    },
+    {
+      "id": 12,
+      "title": "đề lý lớp 6 Trường THCS Chu Văn An",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 12
+    },
+    {
+      "id": 13,
+      "title": "đề lý lớp 7 Trường THCS Trần Đại Nghĩa",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 13
+    },
+    {
+      "id": 14,
+      "title": "đề lý lớp 8 Trường THCS Nguyễn Tri Phương",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 14
+    },
+    {
+      "id": 15,
+      "title": "đề lý lớp 9 Trường THCS Hồng Bàng",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 15
+    },
+    {
+      "id": 16,
+      "title": "đề lý lớp 10 Trường THPT Trưng Vương",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 16
+    },
+    {
+      "id": 17,
+      "title": "đề lý lớp 11 Trường THPT Phan Đình Phùng",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 17
+    },
+    {
+      "id": 18,
+      "title": "đề lý lớp 12 Trường THPT Gia Định",
+      "description": "đề thi năm 2023",
+      "duration": 90,
+      "examSubject": 18
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "question": "phép cộng 1+1=?",
+      "examsId": 1,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "question": "phép trừ 5-2=?",
+      "examsId": 2,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 3,
+      "question": "phép nhân 2x3=?",
+      "examsId": 3,
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "answer": 6
+    },
+    {
+      "id": 4,
+      "question": "phép chia 6/2=?",
+      "examsId": 4,
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "phép cộng 10+5=?",
+      "examsId": 5,
+      "options": [
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
+      "answer": 15
+    },
+    {
+      "id": 6,
+      "question": "phép trừ 9-4=?",
+      "examsId": 6,
+      "options": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "answer": 5
+    },
+    {
+      "id": 7,
+      "question": "phép nhân 4x4=?",
+      "examsId": 7,
+      "options": [
+        "12",
+        "14",
+        "16",
+        "18"
+      ],
+      "answer": 16
+    },
+    {
+      "id": 8,
+      "question": "phép chia 8/2=?",
+      "examsId": 8,
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 4
+    },
+    {
+      "id": 9,
+      "question": "phép cộng 20+30=?",
+      "examsId": 9,
+      "options": [
+        "40",
+        "50",
+        "60",
+        "70"
+      ],
+      "answer": 50
+    },
+    {
+      "id": 10,
+      "question": "phép trừ 15-5=?",
+      "examsId": 10,
+      "options": [
+        "5",
+        "8",
+        "10",
+        "12"
+      ],
+      "answer": 10
+    },
+    {
+      "id": 11,
+      "question": "phép nhân 5x5=?",
+      "examsId": 11,
+      "options": [
+        "20",
+        "25",
+        "30",
+        "35"
+      ],
+      "answer": 25
+    },
+    {
+      "id": 12,
+      "question": "phép chia 12/4=?",
+      "examsId": 12,
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 13,
+      "question": "phép cộng 7+3=?",
+      "examsId": 13,
+      "options": [
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "answer": 10
+    },
+    {
+      "id": 14,
+      "question": "phép trừ 18-9=?",
+      "examsId": 14,
+      "options": [
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "answer": 9
+    },
+    {
+      "id": 15,
+      "question": "phép nhân 6x6=?",
+      "examsId": 15,
+      "options": [
+        "30",
+        "32",
+        "34",
+        "36"
+      ],
+      "answer": 36
+    },
+    {
+      "id": 16,
+      "question": "phép chia 10/2=?",
+      "examsId": 16,
+      "options": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "answer": 5
+    },
+    {
+      "id": 17,
+      "question": "phép cộng 25+25=?",
+      "examsId": 17,
+      "options": [
+        "40",
+        "45",
+        "50",
+        "55"
+      ],
+      "answer": 50
+    },
+    {
+      "id": 18,
+      "question": "phép trừ 22-11=?",
+      "examsId": 18,
+      "options": [
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
+      "answer": 11
+    }
+  ],
+  "userAnswers": [
+    {
+      "id": 1,
+      "profiveUserId": 1,
+      "examsId": 1,
+      "score": 15
+    }
+  ]
 }
