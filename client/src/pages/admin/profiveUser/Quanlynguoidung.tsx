@@ -17,7 +17,7 @@ export default function QuanLyNguoiDung() {
         setUsers(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the users!", error);
+        console.error("lỗi !", error);
       });
   }, []);
 
@@ -40,7 +40,7 @@ export default function QuanLyNguoiDung() {
           alert("Người dùng đã được xóa thành công!");
         })
         .catch((error) => {
-          console.error("There was an error deleting the user!", error);
+          console.error("Đã xảy ra lỗi khi xóa người dùng!", error);
         });
     }
   };
@@ -54,7 +54,7 @@ export default function QuanLyNguoiDung() {
         alert(`Trạng thái người dùng đã được thay đổi thành ${updatedUser.status ? "Active" : "Inactive"}`);
       })
       .catch((error) => {
-        console.error("There was an error updating the user status!", error);
+        console.error("Đã xảy ra lỗi khi cập nhật trạng thái người dùng!", error);
       });
   };
 
@@ -80,7 +80,7 @@ export default function QuanLyNguoiDung() {
           setIsModalOpen(false);
         })
         .catch((error) => {
-          console.error("There was an error updating the user!", error);
+          console.error("Đã xảy ra lỗi khi cập nhật người dùng!", error);
         });
     } else {
       axios
@@ -90,7 +90,7 @@ export default function QuanLyNguoiDung() {
           setIsModalOpen(false);
         })
         .catch((error) => {
-          console.error("There was an error creating the user!", error);
+          console.error("Đã xảy ra lỗi khi tạo người dùng!", error);
         });
     }
   };
@@ -166,9 +166,20 @@ export default function QuanLyNguoiDung() {
       </div>
       {isModalOpen && (
         <Modal
-          isOpen={isModalOpen}
-          onRequestClose={() => setIsModalOpen(false)}
-          contentLabel="User Modal"
+        isOpen={isModalOpen} 
+        onRequestClose={() => setIsModalOpen(false)}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '20px',
+            width: '400px',
+          },
+        }}
         >
           <h2>
             {currentUser ? "Chỉnh sửa người dùng" : "Thêm mới người dùng"}

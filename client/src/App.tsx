@@ -5,11 +5,12 @@ import Luyenthithpt from "./pages/user/luyenthithpt/Luyenthithpt";
 import Luyenthidgnl from "./pages/user/luyenthidgnl/Luyenthidgnl";
 import Lop6 from "./pages/user/thcs/Lop6";
 import Admin from "./pages/admin/Admin";
-import Quanlycauhoi from "./pages/admin/quanlycauhoi/Quanlycauhoi";
-import Quanlydethi from "./pages/admin/quanlydethi/Quanlydethi";
-import Quanlykhoaluyenthi from "./pages/admin/quanlykhoaluyenthi/Quanlykhoaluyenthi";
-import Quanlymonthi from "./pages/admin/quanlymonthi/Quanlymonthi";
-import Quanlynguoidung from "./pages/admin/quanlynguoidung/Quanlynguoidung";
+import Quanlycauhoi from "./pages/admin/questions/Quanlycauhoi";
+import Quanlydethi from "./pages/admin/exams/Quanlydethi";
+import Quanlykhoaluyenthi from "./pages/admin/courses/Quanlykhoaluyenthi";
+import Quanlymonthi from "./pages/admin/examSubject/Quanlymonthi";
+import Quanlynguoidung from "./pages/admin/profiveUser/Quanlynguoidung";
+import Diemnguoidung from "./pages/admin/userAnswers/diemnguoidung";
 export default function App() {
   return (
     <div>
@@ -24,6 +25,7 @@ export default function App() {
     </Router> */}
       {/* <Login/> */}
       <Router>
+          {/* <HeaderAdmin></HeaderAdmin> */}
           <Admin></Admin>
         <Routes>
           <Route
@@ -45,6 +47,10 @@ export default function App() {
           <Route
             path="/quanlynguoidung"
             element={<Quanlynguoidung/>}
+          ></Route>
+          <Route
+            path="/diemnguoidung"
+            element={<Diemnguoidung/>}
           ></Route>
         </Routes>
       </Router>

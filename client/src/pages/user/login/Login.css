@@ -1,0 +1,125 @@
+.app {
+    display: flex;
+    height: 80vh;
+    margin-top: 30px;
+    margin-left: 120px;
+    font-family: Arial, Helvetica, sans-serif;
+
+  }
+  .content h2{
+    text-align: center;
+    color: #34495e;
+  }
+  .left-panel, .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 10px 10px 1px rgba(0,0,0,0.1);
+  }
+  .logo1:hover{
+    cursor: pointer;
+  }
+  .left-panel {
+    background-color: #8ce2d9; 
+    width: 700px;
+    justify-content: center;
+    text-align: center;
+  }
+  .right-panel {
+    background-color: #34495e;
+    color: white;
+    padding-top: 100px;
+    align-items: center;
+  }
+  .tabs{
+    display: flex;
+  }
+
+  .tabs button {
+    color: rgb(129, 126, 126);
+    background: none;
+    border: none;
+    padding: 5px 5px 5px 35px !important; 
+    margin-right: 10px !important;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #signin{
+    padding-left: 10px;
+  }
+  .auth-form {
+    width: 300px;
+  }
+  
+  input[type="text"], input[type="password"], input[type="email"]{
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    background: none;
+    border-bottom: 1px solid #ccc;
+  }
+  input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    outline: none; 
+    border-bottom: 1px solid #696c6f; 
+  }
+  form button{
+    border-radius: 15px;
+    height: 30px;
+    width: 120px;
+    color: white;
+    background-color: #8ce2d9;
+    border: none;
+  }
+  .signin-link{
+    font-size: 15px;
+    padding-top: 4px;
+  }
+  .signin-link:hover{
+    cursor: pointer;
+  }
+  .xacnhan{
+    display: flex;
+  }
+  .xacnhan button{
+    margin-top: 12px;
+    margin-right: 20px;
+    font-size: 15px;
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .xacnhan button:hover{
+    transform: translateY(-3px); 
+    cursor: pointer;
+  }
+  .checkbox {
+    margin: 20px 0 20px 0;
+    /* padding-top: 100px; */
+  }
+  label{
+    font-size: 15px;
+  }
+    label:hover{
+    cursor: pointer;
+  }
+  button:hover{
+    cursor: pointer;
+  }
+  .backround-image {
+    background-image: url('../assets/hongle.png');   /*add image*/
+    height: 400px; 
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    margin-left: 50px;
+    /* position: absolute; */
+  }
+  
+  .icon-placeholder {
+    
+  }
+  
+  .hidden {
+    display: none;
+  }

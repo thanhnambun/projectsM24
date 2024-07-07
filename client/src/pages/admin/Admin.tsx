@@ -39,10 +39,12 @@ export default function Admin() {
               <a className="menu-link-doodle">
                 <Link to={"/quanlycauhoi"}>Quản lý câu hỏi</Link>
               </a>
-              <a href="./manage_user.html" className="menu-link">
-                <i className="fa-solid fa-user" />
+              <a  className="menu-link">
                 <Link to={"quanlynguoidung"}>Người dùng </Link>
               </a>
+              <div  className="menu-link">
+                <Link to={"/diemnguoidung"}>Điểm người dùng  </Link>
+              </div>
               <a href="" className="menu-link">
                 <i className="fa-solid fa-gear" />
                 <span>Cài đặt </span>

@@ -77,11 +77,6 @@
       "id": 8,
       "title": "khoá học luyện thi cho lớp 11",
       "description": "khóa học luyện thi cho học sinh lớp 11"
-    },
-    {
-      "id": 9,
-      "title": "khoá học luyện thi cho lớp 12",
-      "description": "khóa học luyện thi cho học sinh lớp 12"
     }
   ],
   "examSubject": [
@@ -134,12 +129,6 @@
       "coursesId": 8
     },
     {
-      "id": 9,
-      "title": "môn toán",
-      "description": "luyện thi cho học sinh lớp 12",
-      "coursesId": 9
-    },
-    {
       "id": 10,
       "title": "môn lý",
       "description": "luyện thi đại học",
@@ -186,12 +175,6 @@
       "title": "môn lý",
       "description": "luyện thi cho học sinh lớp 11",
       "coursesId": 8
-    },
-    {
-      "id": 18,
-      "title": "môn lý",
-      "description": "luyện thi cho học sinh lớp 12",
-      "coursesId": 9
     }
   ],
   "exams": [
@@ -200,7 +183,7 @@
       "title": "đề chuyên toán Trường THPT Lê Quý Đôn",
       "description": "đề thi năm 2023",
       "duration": 90,
-      "examSubject": 1
+      "examSubjectId": 1
     },
     {
       "id": 2,

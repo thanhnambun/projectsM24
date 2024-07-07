@@ -27,9 +27,9 @@ export interface UserType {
   }
   export interface Question{
     id:number,
-    Question:string,
+    question:string,
     examId : number,
-    option:[],
+    options:[],
     answer:string,
   }
   export interface UserAnswer{

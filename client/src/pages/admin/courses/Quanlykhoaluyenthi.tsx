@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { Courses } from "../../../interface/interface";
 
-
+Modal.setAppElement("#root");
 
 export default function Quanlykhoaluyenthi() {
   const [courses, setCourses] = useState<Courses[]>([]);
@@ -17,7 +17,7 @@ export default function Quanlykhoaluyenthi() {
         setCourses(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the courses!", error);
+        console.error("lỗi!", error);
       });
   }, []);
 
@@ -32,14 +32,17 @@ export default function Quanlykhoaluyenthi() {
   };
 
   const handleDeleteCourse = (courseId: number) => {
-    axios
-      .delete(`http://localhost:8080/courses/${courseId}`)
-      .then(() => {
-        setCourses(courses.filter((course) => course.id !== courseId));
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the course!", error);
-      });
+    if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
+      axios
+        .delete(`http://localhost:8080/course/${courseId}`)
+        .then(() => {
+          setCourses(courses.filter((course) => course.id !== courseId));
+          alert("Câu hỏi đã được xóa thành công!");
+        })
+        .catch((error) => {
+          console.error("Đã xảy ra lỗi!", error);
+        });
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +63,7 @@ export default function Quanlykhoaluyenthi() {
           setIsModalOpen(false);
         })
         .catch((error) => {
-          console.error("There was an error updating the course!", error);
+          console.error("Đã xảy ra lỗi khi cập nhật khóa học!", error);
         });
     } else {
       axios
@@ -70,7 +73,7 @@ export default function Quanlykhoaluyenthi() {
           setIsModalOpen(false);
         })
         .catch((error) => {
-          console.error("There was an error creating the course!", error);
+          console.error("Đã xảy ra lỗi khi tạo khóa học!", error);
         });
     }
   };
@@ -115,18 +118,56 @@ export default function Quanlykhoaluyenthi() {
         </table>
       </div>
 
-      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
+      <Modal 
+        isOpen={isModalOpen} 
+        onRequestClose={() => setIsModalOpen(false)}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '20px',
+            width: '400px',
+          },
+        }}
+      >
+        <h2>{currentCourse ? "Edit Course" : "Add Course"}</h2>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="form-group">
             <label htmlFor="title">Title</label>
-            <input id="title" name="title" type="text" defaultValue={currentCourse?.title || ""} required />
+            <input 
+              id="title" 
+              name="title" 
+              type="text" 
+              defaultValue={currentCourse?.title || ""} 
+              required 
+              className="form-control"
+            />
           </div>
-          <div>
+          <div className="form-group">
             <label htmlFor="description">Description</label>
-            <input id="description" name="description" type="text" defaultValue={currentCourse?.description || ""} required />
+            <input 
+              id="description" 
+              name="description" 
+              type="text" 
+              defaultValue={currentCourse?.description || ""} 
+              required 
+              className="form-control"
+            />
           </div>
-          <button type="submit">{currentCourse ? "Update" : "Create"}</button>
-          <button type="button" onClick={() => setIsModalOpen(false)}>Cancel</button>
+          <button type="submit" className="btn btn-primary">
+            {currentCourse ? "Update" : "Create"}
+          </button>
+          <button 
+            type="button" 
+            className="btn btn-secondary" 
+            onClick={() => setIsModalOpen(false)}
+          >
+            Cancel
+          </button>
         </form>
       </Modal>
     </div>
