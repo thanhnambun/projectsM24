@@ -5,10 +5,12 @@ export interface UserType {
     email: string;
     password: string;
     status: boolean;
+    img:string
     role: "ADMIN" | "USER";
   }
   export interface Courses{
     id:number,
+    img:string
     title:string,
     description:string,
   }

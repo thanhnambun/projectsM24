@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { UserAnswer } from "../../../interface/interface";
 
 Modal.setAppElement("#root");
-
-export interface UserAnswer {
-  id: number;
-  userId: number;
-  examId: number;
-  score: number;
-}
 
 export default function Diemnguoidung() {
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -23,7 +17,7 @@ export default function Diemnguoidung() {
         setUserAnswers(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the user answers!", error);
+        console.error("Lỗi!", error);
       });
   }, []);
 
@@ -38,15 +32,15 @@ export default function Diemnguoidung() {
   };
 
   const handleDeleteUserAnswer = (userAnswerId: number) => {
-    if (window.confirm("Are you sure you want to delete this user answer?")) {
+    if (window.confirm("Bạn có chắc muốn xóa ?")) {
       axios
         .delete(`http://localhost:8080/userAnswers/${userAnswerId}`)
         .then(() => {
           setUserAnswers(userAnswers.filter((answer) => answer.id !== userAnswerId));
-          alert("User answer deleted successfully!");
+          alert("đã xóa thành công !");
         })
         .catch((error) => {
-          console.error("There was an error deleting the user answer!", error);
+          console.error("lỗi !", error);
         });
     }
   };
@@ -111,8 +105,8 @@ export default function Diemnguoidung() {
             {userAnswers.map((userAnswer) => (
               <tr key={userAnswer.id}>
                 <td>{userAnswer.id}</td>
-                <td>{userAnswer.userId}</td>
-                <td>{userAnswer.examId}</td>
+                <td>{userAnswer.profiveUserId}</td>
+                <td>{userAnswer.examsId}</td>
                 <td>{userAnswer.score}</td>
                 <td>
                   <button onClick={() => handleEditUserAnswer(userAnswer)}>Edit</button>

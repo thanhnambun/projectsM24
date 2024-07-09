@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { Exam } from "../../../interface/interface";
+import { Exam, ExamSubjects } from "../../../interface/interface";
 
 Modal.setAppElement("#root");
 
 export default function Quanlydethi() {
   const [exams, setExams] = useState<Exam[]>([]);
+  const [examSubjects, setExamSubjects] = useState<ExamSubjects[]>([]);
   const [currentExam, setCurrentExam] = useState<Exam | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,6 +22,17 @@ export default function Quanlydethi() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/examSubjects")
+      .then((response) => {
+        setExamSubjects(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the exam subjects!", error);
+      });
+  }, []);
+
   const handleAddExam = () => {
     setCurrentExam(null);
     setIsModalOpen(true);
@@ -31,16 +43,16 @@ export default function Quanlydethi() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (examId: number) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa đề thi này  dùng này không?")) {
+  const handleDeleteExam = (examId: number) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa đề thi này không?")) {
       axios
-        .delete(`http://localhost:8080/profiveUser/${examId}`)
+        .delete(`http://localhost:8080/exams/${examId}`)
         .then(() => {
-          setExams(exams.filter((exams) => exams.id !== examId));
-          alert("Người dùng đã được xóa thành công!");
+          setExams(exams.filter((exam) => exam.id !== examId));
+          alert("Đề thi đã được xóa thành công!");
         })
         .catch((error) => {
-          console.error("Đã xảy ra lỗi khi xóa người dùng!", error);
+          console.error("Đã xảy ra lỗi khi xóa đề thi!", error);
         });
     }
   };
@@ -85,8 +97,8 @@ export default function Quanlydethi() {
       <div className="main">
         <div className="nav_gallery">
           <div className="nav_gallery_left">
-            <p>Chuỗi các câu hỏi </p>
-            <h4 className="text1">Câu hỏi</h4>
+            <p>Quản lý đề thi</p>
+            <h4 className="text1">Đề thi</h4>
           </div>
           <div className="nav_gallery_right">
             <button className="create" onClick={handleAddExam}>
@@ -100,12 +112,12 @@ export default function Quanlydethi() {
             <tr>
               <th scope="col">STT</th>
               <th scope="col" style={{ minWidth: 200, maxWidth: 200 }}>
-                Đề thi 
+                Đề thi
               </th>
-              <th scope="col">Description</th>
-              <th scope="col">Duration</th>
-              <th scope="col">Exam Subject ID</th>
-              <th scope="col">Action</th>
+              <th scope="col">Mô tả</th>
+              <th scope="col">Thời gian</th>
+              <th scope="col">ID Môn thi</th>
+              <th scope="col">Hành động</th>
             </tr>
           </thead>
           <tbody id="tbody" className="table-group-divider">
@@ -115,10 +127,10 @@ export default function Quanlydethi() {
                 <td>{exam.title}</td>
                 <td>{exam.description}</td>
                 <td>{exam.duration}</td>
-                <td>{exam.examSubjectId}</td>
+                <td>{exam.examSubject}</td>
                 <td>
-                  <button onClick={() => handleEditExam(exam)}>Edit</button>
-                  <button onClick={() => handleDelete(exam.id)}>Delete</button>
+                  <button onClick={() => handleEditExam(exam)}>Sửa</button>
+                  <button onClick={() => handleDeleteExam(exam.id)}>Xóa</button>
                 </td>
               </tr>
             ))}
@@ -141,31 +153,47 @@ export default function Quanlydethi() {
           },
         }}
       >
-        <h2>{currentExam ? "Edit Exam" : "Add Exam"}</h2>
+        <h2>{currentExam ? "Sửa đề thi" : "Thêm đề thi"}</h2>
         <form onSubmit={handleSubmit}>
           <label>
-            Title:
+            Tên đề thi:
             <input name="title" defaultValue={currentExam?.title || ""} required />
           </label>
           <br />
           <label>
-            Description:
+            Mô tả:
             <input name="description" defaultValue={currentExam?.description || ""} required />
           </label>
           <br />
           <label>
-            Duration:
+            Thời gian (phút):
             <input name="duration" type="number" defaultValue={currentExam?.duration || ""} required />
           </label>
           <br />
           <label>
-            Exam Subject ID:
-            <input name="examSubjectId" type="number" defaultValue={currentExam?.examSubjectId || ""} required />
+            Môn thi:
+            <select
+              name="examSubjectId"
+              defaultValue={currentExam?.examSubjectId || ""}
+              required
+            >
+              <option value="">Toán </option>
+              <option value="">Ngữ Văn</option>
+              <option value="">GDCD</option>
+              <option value="">Tiếng Anh</option>
+              <option value="">Lịch sử </option>
+              <option value="">Địa lý </option>
+              {/* {examSubjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.title}
+                </option>
+              ))} */}
+            </select>
           </label>
           <br />
-          <button type="submit">Submit</button>
+          <button type="submit">Gửi</button>
         </form>
-        <button onClick={() => setIsModalOpen(false)}>Close</button>
+        <button onClick={() => setIsModalOpen(false)}>Đóng</button>
       </Modal>
     </div>
   );

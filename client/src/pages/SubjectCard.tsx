@@ -1,7 +1,7 @@
 import React from 'react';
 import './SubjectCard.css';
 
-function SubjectCard({ title, description, imageUrl }) {
+function SubjectCard({ title, description, imageUrl}) {
   return (
     <div className='full'>
         <div className="subject-card">

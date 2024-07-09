@@ -98,8 +98,8 @@ export default function Quanlycauhoi() {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Mã đề</th>
               <th scope="col">STT</th>
+              <th scope="col">Đề</th>
               <th scope="col" style={{ minWidth: 200, maxWidth: 200 }}>
                 Câu hỏi
               </th>
@@ -111,8 +111,8 @@ export default function Quanlycauhoi() {
           <tbody id="tbody" className="table-group-divider">
             {questions.map((question, index) => (
               <tr key={question.id}>
-                <td>{question.examId}</td>
                 <td>{index + 1}</td>
+                <td>{question.examTitle}</td>
                 <td>{question.question}</td>
                 <td>{question.options.join(",")}</td>
                 <td>{question.answer}</td>

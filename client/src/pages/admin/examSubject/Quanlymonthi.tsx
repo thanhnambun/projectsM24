@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { ExamSubjects } from "../../../interface/interface";
+import { ExamSubjects, Courses } from "../../../interface/interface";
 
 Modal.setAppElement("#root");
 
-
 export default function Quanlymonthi() {
   const [examSubjects, setExamSubjects] = useState<ExamSubjects[]>([]);
-  const [currentExamSubject, setCurrentExamSubject] = useState<ExamSubjects | null>(null);
+  const [courses, setCourses] = useState<Courses[]>([]);
+  const [currentExamSubject, setCurrentExamSubject] =
+    useState<ExamSubjects | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -16,6 +17,16 @@ export default function Quanlymonthi() {
       .get("http://localhost:8080/examSubject")
       .then((response) => {
         setExamSubjects(response.data);
+      })
+      .catch((error) => {
+        console.error("lỗi!", error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/courses")
+      .then((response) => {
+        setCourses(response.data);
       })
       .catch((error) => {
         console.error("lỗi!", error);
@@ -37,7 +48,9 @@ export default function Quanlymonthi() {
       axios
         .delete(`http://localhost:8080/course/${examSubjectId}`)
         .then(() => {
-          setExamSubjects(examSubjects.filter((course) => course.id !== examSubjectId));
+          setExamSubjects(
+            examSubjects.filter((course) => course.id !== examSubjectId)
+          );
           alert("Câu hỏi đã được xóa thành công!");
         })
         .catch((error) => {
@@ -61,7 +74,11 @@ export default function Quanlymonthi() {
       axios
         .put(`http://localhost:8080/examSubject/${examSubject.id}`, examSubject)
         .then(() => {
-          setExamSubjects(examSubjects.map((subject) => (subject.id === examSubject.id ? examSubject : subject)));
+          setExamSubjects(
+            examSubjects.map((subject) =>
+              subject.id === examSubject.id ? examSubject : subject
+            )
+          );
           setIsModalOpen(false);
         })
         .catch((error) => {
@@ -88,7 +105,9 @@ export default function Quanlymonthi() {
             <h4 className="text1">Quản lý môn thi</h4>
           </div>
           <div className="nav_gallery_right">
-            <button className="create" onClick={handleAddExamSubject}>Thêm mới</button>
+            <button className="create" onClick={handleAddExamSubject}>
+              Thêm mới
+            </button>
           </div>
         </div>
         {/* table */}
@@ -96,7 +115,9 @@ export default function Quanlymonthi() {
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col" style={{ minWidth: 200, maxWidth: 200 }}>Môn thi</th>
+              <th scope="col" style={{ minWidth: 200, maxWidth: 200 }}>
+                Môn thi
+              </th>
               <th scope="col">Khóa luyện thi</th>
               <th scope="col">Action</th>
             </tr>
@@ -106,55 +127,71 @@ export default function Quanlymonthi() {
               <tr key={examSubject.id}>
                 <td>{examSubject.id}</td>
                 <td>{examSubject.title}</td>
-                <td>{examSubject.courseId}</td>
+                <td>{examSubject.description}</td>
                 <td>
-                  <button onClick={() => handleEditExamSubject(examSubject)}>Edit</button>
-                  <button onClick={() => handleDeleteExamSubject(examSubject.id)}>Delete</button>
+                  <button onClick={() => handleEditExamSubject(examSubject)}>
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteExamSubject(examSubject.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Modal isOpen={isModalOpen} 
+      <Modal
+        isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
         style={{
           content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            padding: '20px',
-            width: '400px',
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            padding: "20px",
+            width: "400px",
           },
-        }}>
+        }}
+      >
         <h2>{currentExamSubject ? "Edit Exam Subject" : "Add Exam Subject"}</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Title:
-            <input name="title" defaultValue={currentExamSubject?.title || ""} />
+            <input
+              name="title"
+              defaultValue={currentExamSubject?.title || ""}
+            />
           </label>
           <br />
           <label>
             Description:
-            <input name="description" defaultValue={currentExamSubject?.description || ""} />
+            <input
+              name="description"
+              defaultValue={currentExamSubject?.description || ""}
+            />
           </label>
           <br />
           <label>
-          <div>
-              <label>courseId</label>
-              <select
-                name="role"
-                defaultValue={currentExamSubject?.courseId || "2"|| "3"|| "4"|| "5"|| "6"|| "7"|| "8"|| "9"}
-                required
-              >
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
-            </div>
+            Course:
+            <select
+              name="courseId"
+              defaultValue={currentExamSubject?.courseId || ""}
+            >
+              <option value="">Select Course</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.title}
+                </option>
+              ))}
+            </select> 
           </label>
+
           <br />
           <button type="submit">Submit</button>
         </form>

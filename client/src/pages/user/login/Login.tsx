@@ -1,14 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Login.css';
+import { useNavigate } from 'react-router-dom'
+import { start } from 'repl';
+
+export interface UserType {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    status: boolean;
+    role: "ADMIN" | "USER";
+}
 
 function Login() {
-    const [isSignUp, setIsSignUp] = useState(true); // true for Sign Up, false for Sign In
+    const [isSignUp, setIsSignUp] = useState(true);
+    const [users, setUsers] = useState<UserType[]>([]);
+    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [terms, setTerms] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/profiveUser");
+            setUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    };
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        console.log({ name, email, password, terms });
+
+        
+        const response = await axios.get(`http://localhost:8080/profiveUser?email=${email}`);
+            if(response.data.length) {
+                alert('Email hoặc password đã tồn tại. Vui lòng đăng nhập hoặc đăng kí lại khác.');
+            } else  {
+                await axios.post("http://localhost:8080/profiveUser", { firstName,lastName, email, password, status:true });
+                alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                setIsSignUp(false);
+            }
+    };
+
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        console.log({ email, password });
+
+        try {
+            const response = await axios.get(`http://localhost:8080/profiveUser?email=${email}&password=${password}`);
+            if(response.data) {
+                localStorage.setItem('token', response.data.id);
+                navigate('/');    
+                alert('Đăng nhập thành công');
+            } else {
+                alert('Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.');
+            }
+        } catch (error) {
+            console.error("Error signing in:", error);
+            alert('Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.');
+        }
+    };
 
     return (
         <div className="app">
             <div className="left-panel">
                 <header>
-                    <div className='logo1'>
+                <div className='logo1'>
                         <svg width="45" height="88" viewBox="0 0 135 178" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M68.4881 74C44.9881 74 39 37 39 37H96.4881C95.5035 46 91.9881 74 68.4881 74Z" fill="url(#paint0_linear_4_14)" stroke="#1B4A74" />
                             <path d="M112 8H24L38.5 12.5V29.5H97V12.5L112 8Z" fill="#20356A" stroke="#20356A" />
@@ -62,29 +129,58 @@ function Login() {
                 </header>
                 <div className="content">
                     <h2>Chắp cánh ước mơ cùng HOCTOT</h2>
-                    <div className="backround-image"></div>
+                    <div className="background-image"></div>
                 </div>
             </div>
             <div className="right-panel">
                 <div className="auth-form">
                     <div className="tabs">
-                        <button id='sign in' className={!isSignUp ? "active" : ""} style={{ color: !isSignUp?'#8ce2d9': '' }} onClick={() => setIsSignUp(false)}>Đăng nhập</button>
-                        <button className={isSignUp ? "active" : ""} style={{  color: isSignUp?'#8ce2d9': ''}} onClick={() => setIsSignUp(true)}>Đăng ký</button>
                     </div>
-                    <form>
-                        {isSignUp}
-                        <input type="text" placeholder="Tên" />
-                        <input type="password" placeholder="Mật khẩu" />
-                        {isSignUp && <input type="email" placeholder="Email" className={isSignUp ? "" : "hidden"} />}
+                    <form onSubmit={isSignUp ? handleSignUp : handleSignIn}>
                         {isSignUp && (
-                            <div className={isSignUp ? "checkbox" : "hidden"}>
-                                <input type="checkbox" id="terms" />
+                            <input
+                                type="text"
+                                placeholder="First Name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                        )}
+                        {isSignUp && (
+                            <input
+                                type="text"
+                                placeholder="Last Name"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        )}
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Mật khẩu"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        {isSignUp && (
+                            <div className="checkbox">
+                                <input
+                                    type="checkbox"
+                                    id="terms"
+                                    checked={terms}
+                                    onChange={(e) => setTerms(e.target.checked)}
+                                />
                                 <label htmlFor="terms">Đồng ý các điều khoản dịch vụ</label>
                             </div>
                         )}
-                        <div className='xacnhan'>
+                        <div className="xacnhan">
                             <button type="submit">{isSignUp ? 'Đăng ký' : 'Đăng nhập'}</button>
-                            <p className="signin-link">{isSignUp ? "Đã có tài khoản" : "Tạo tài khoản mới"}</p>
+                            <p className="signin-link" onClick={() => setIsSignUp(!isSignUp)}>
+                                {isSignUp ? "Đã có tài khoản" : "Tạo tài khoản mới"}
+                            </p>
                         </div>
                     </form>
                 </div>

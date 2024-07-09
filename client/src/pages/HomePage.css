@@ -11,50 +11,6 @@ a {
 
 /* bắt dầu header */
 
-header {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, .078);
-    z-index: 1201;
-}
-
-.logo {
-    padding: 0px 120px;
-    margin-right: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.menu {
-    color: #060406;
-    padding: 30px;
-    font-size: 20px;
-    font-family: Inter, Helvetica, sans-serif;
-}
-
-.menu-trangchu {
-    display: flex;
-    gap: 40px;
-}
-
-.nameBanner {
-    color: #060406;
-    padding: 30px;
-    font-size: 20px;
-    font-family: Inter, Helvetica, sans-serif;
-}
-
-.search {
-    display: flex;
-    margin-left: 100px;
-    gap: 50px;
-}
-
 
 /* banner */
 
@@ -80,137 +36,59 @@ header {
     color: #2ca6eb;
 }
 
-.practice-panel {
-    position: relative;
-}
-
-.practice-panel-header {
-    position: relative;
-    padding: 30px 0 0;
-    font-size: 32px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.css-1d3bbye {
-    box-sizing: border-box;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+.full {
+    margin: 0 20px 0 20px;
     display: flex;
-    -webkit-box-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    width: 100%;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    gap: 50px
+    justify-content: space-between;
 }
 
-.practice-panel-item-button {
-    width: 238px;
-    height: 48px;
-    margin: 30px auto 0;
-    border: 1px solid #ff792f;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
-    color: #ff792f;
-}
-
-.practice-panel-item-button button {
-    width: 100%;
-    height: 100%;
-    font-size: inherit;
-}
-
-.css-w0pj6f {
+.subject-card {
+    width: 250px;
+    margin: 0 0px 30px 0px;
+    height: 320px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     overflow: hidden;
-    pointer-events: none;
-    position: absolute;
-    z-index: 0;
-    inset: 0px;
-    border-radius: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.css-1ll7j1d {
+.subject-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.subject-image {
     width: 100%;
-    margin-left: auto;
-    box-sizing: border-box;
-    margin-right: auto;
-    display: block;
-    padding-left: 16px;
-    padding-right: 16px;
+    height: 180px;
+    object-fit: cover;
+    cursor: pointer;
 }
 
-.css-sayu3r {
-    box-sizing: border-box;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    width: 100%;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    margin-top: -48px;
-    width: calc(100% + 48px);
-    margin-left: -48px;
+image {
+    border: 1 0px;
 }
 
-.textlorem {
-    margin-top: 0;
-    margin-bottom: 1rem;
+.subject-info {
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #fff;
+    cursor: pointer;
 }
 
-.product {
-    background-image: linear-gradient(180deg, #fa7979 0%, #f2eef5 100%);
-    width: 20%;
-    border-radius: 20px;
-    padding: 20px 17px;
+.subject-info p {
+    color: #5a6173;
+    font-size: 15px;
 }
 
-.timhieuthem {
-    height: 40px;
-    width: 200px;
-    color: #f26b6b;
-    border: 2px solid #f48587;
-    margin: 10px;
-    border-radius: 20px;
-}
-
-.tong {
-    display: flex;
-}
-
-.timhieuthem:hover {
-    color: rgb(213, 82, 213);
-    background-color: rgb(233, 229, 229);
-}
-
-.icons {
-    color: #f26b6b;
+.subject-info h2 {
     font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #f48587;
-    border-radius: 50%;
-    line-height: 40px;
-    text-align: center;
+    font-weight: 600;
 }
 
-#allProduct-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 20px;
+.subject-info h2:hover {
+    color: #FF792F;
 }
 
 
