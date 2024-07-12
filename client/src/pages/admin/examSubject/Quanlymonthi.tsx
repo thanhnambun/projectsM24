@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { ExamSubjects, Courses } from "../../../interface/interface";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../config/fisabase";
+import { Courses } from "../../../interface/interface";
+
+export interface ExamSubjects {
+  id: number;
+  title: string;
+  img: string;
+  description: string;
+  courseId: number;
+}
 
 Modal.setAppElement("#root");
 
@@ -11,6 +21,12 @@ export default function Quanlymonthi() {
   const [currentExamSubject, setCurrentExamSubject] =
     useState<ExamSubjects | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const examSubjectsPerPage = 5; // Adjust the number of exam subjects per page as needed
 
   useEffect(() => {
     axios
@@ -22,6 +38,7 @@ export default function Quanlymonthi() {
         console.error("lỗi!", error);
       });
   }, []);
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/courses")
@@ -46,16 +63,29 @@ export default function Quanlymonthi() {
   const handleDeleteExamSubject = (examSubjectId: number) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
       axios
-        .delete(`http://localhost:8080/course/${examSubjectId}`)
+        .delete(`http://localhost:8080/examSubject/${examSubjectId}`)
         .then(() => {
           setExamSubjects(
-            examSubjects.filter((course) => course.id !== examSubjectId)
+            examSubjects.filter((subject) => subject.id !== examSubjectId)
           );
-          alert("Câu hỏi đã được xóa thành công!");
+          alert("Môn thi đã được xóa thành công!");
         })
         .catch((error) => {
           console.error("Đã xảy ra lỗi!", error);
         });
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const imageRef = ref(storage, `images/${file.name}`);
+      uploadBytes(imageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setImageUrl(url);
+        });
+      });
     }
   };
 
@@ -68,6 +98,7 @@ export default function Quanlymonthi() {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       courseId: Number(formData.get("courseId")),
+      img: imageUrl,
     };
 
     if (currentExamSubject) {
@@ -97,6 +128,17 @@ export default function Quanlymonthi() {
     }
   };
 
+  // Get current exam subjects for pagination
+  const indexOfLastExamSubject = currentPage * examSubjectsPerPage;
+  const indexOfFirstExamSubject = indexOfLastExamSubject - examSubjectsPerPage;
+  const currentExamSubjects = examSubjects.slice(
+    indexOfFirstExamSubject,
+    indexOfLastExamSubject
+  );
+
+  // Function to change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <div className="main">
@@ -123,7 +165,7 @@ export default function Quanlymonthi() {
             </tr>
           </thead>
           <tbody id="tbody" className="table-group-divider">
-            {examSubjects.map((examSubject) => (
+            {currentExamSubjects.map((examSubject) => (
               <tr key={examSubject.id}>
                 <td>{examSubject.id}</td>
                 <td>{examSubject.title}</td>
@@ -142,6 +184,17 @@ export default function Quanlymonthi() {
             ))}
           </tbody>
         </table>
+        <div className="pagination">
+          {[
+            ...Array(
+              Math.ceil(examSubjects.length / examSubjectsPerPage)
+            ).keys(),
+          ].map((number) => (
+            <button key={number} onClick={() => paginate(number + 1)}>
+              {number + 1}
+            </button>
+          ))}
+        </div>
       </div>
       <Modal
         isOpen={isModalOpen}
@@ -189,9 +242,13 @@ export default function Quanlymonthi() {
                   {course.title}
                 </option>
               ))}
-            </select> 
+            </select>
           </label>
-
+          <br />
+          <label>
+            Ảnh:
+            <input type="file" name="img" onChange={handleChange} />
+          </label>
           <br />
           <button type="submit">Submit</button>
         </form>

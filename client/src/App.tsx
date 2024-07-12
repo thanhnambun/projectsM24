@@ -1,9 +1,8 @@
 import HomePage from "./pages/HomePage";
 // import Login from './pages/Login'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Luyenthithpt from "./pages/user/luyenthithpt/Luyenthithpt";
-import Luyenthidgnl from "./pages/user/luyenthidgnl/Luyenthidgnl";
-import Lop6 from "./pages/user/thcs/Lop6";
+import Luyenthi from "./pages/user/khoaluyenthi/Luyenthi";
+import Monthi from "./pages/user/monthi/Dethi";
 import Admin from "./pages/admin/Admin";
 import Quanlycauhoi from "./pages/admin/questions/Quanlycauhoi";
 import Quanlydethi from "./pages/admin/exams/Quanlydethi";
@@ -19,9 +18,11 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage></HomePage>} />
-          <Route path="/luyenthithpt" element={<Luyenthithpt />} />
-          <Route path="/luyenthidgnl" element={<Luyenthidgnl />} />
-          <Route path="/lop6" element={<Lop6 />} />
+          <Route path="/luyenthi/:idkhoathi" element={<Luyenthi />}></Route>
+          <Route
+            path="/luyenthi/:idkhoathi/monthi/:idMonthi"
+            element={<Monthi />}
+          />
           <Route path="/login" element={<Login />}></Route>
           <Route path="/admin" element={<Admin></Admin>}>
             <Route path="quanlycauhoi" element={<Quanlycauhoi />}></Route>

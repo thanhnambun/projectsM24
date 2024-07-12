@@ -9,6 +9,8 @@ export default function Quanlycauhoi() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 5; // Số câu hỏi trên mỗi trang
 
   useEffect(() => {
     axios
@@ -36,7 +38,9 @@ export default function Quanlycauhoi() {
       axios
         .delete(`http://localhost:8080/questions/${questionId}`)
         .then(() => {
-          setQuestions(questions.filter((question) => question.id !== questionId));
+          setQuestions(
+            questions.filter((question) => question.id !== questionId)
+          );
           alert("Câu hỏi đã được xóa thành công!");
         })
         .catch((error) => {
@@ -53,7 +57,12 @@ export default function Quanlycauhoi() {
       id: currentQuestion ? currentQuestion.id : 0,
       question: formData.get("question") as string,
       examId: Number(formData.get("examId")),
-      options: formData.getAll("options") as [],
+      options:
+        formData
+          .get("options")
+          ?.toString()
+          .split(",")
+          .map((option) => option.trim()) || [],
       answer: formData.get("answer") as string,
     };
 
@@ -61,7 +70,9 @@ export default function Quanlycauhoi() {
       axios
         .put(`http://localhost:8080/questions/${question.id}`, question)
         .then(() => {
-          setQuestions(questions.map((q) => (q.id === question.id ? question : q)));
+          setQuestions(
+            questions.map((q) => (q.id === question.id ? question : q))
+          );
           setIsModalOpen(false);
         })
         .catch((error) => {
@@ -79,6 +90,17 @@ export default function Quanlycauhoi() {
         });
     }
   };
+
+  // Lấy câu hỏi hiện tại cho phân trang
+  const indexOfLastQuestion = currentPage * questionsPerPage;
+  const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+  const currentQuestions = questions.slice(
+    indexOfFirstQuestion,
+    indexOfLastQuestion
+  );
+
+  // Hàm thay đổi trang
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -109,21 +131,35 @@ export default function Quanlycauhoi() {
             </tr>
           </thead>
           <tbody id="tbody" className="table-group-divider">
-            {questions.map((question, index) => (
+            {currentQuestions.map((question, index) => (
               <tr key={question.id}>
                 <td>{index + 1}</td>
                 <td>{question.examTitle}</td>
                 <td>{question.question}</td>
-                <td>{question.options.join(",")}</td>
+                <td>{question.options.join(", ")}</td>
                 <td>{question.answer}</td>
                 <td>
-                  <button onClick={() => handleEditQuestion(question)}>Edit</button>
-                  <button onClick={() => handleDelete(question.id)}>Delete</button>
+                  <button onClick={() => handleEditQuestion(question)}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(question.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {/* Phân trang */}
+        <div className="pagination">
+          {[
+            ...Array(Math.ceil(questions.length / questionsPerPage)).keys(),
+          ].map((number) => (
+            <button key={number} onClick={() => paginate(number + 1)}>
+              {number + 1}
+            </button>
+          ))}
+        </div>
       </div>
       <Modal
         isOpen={isModalOpen}
@@ -145,22 +181,39 @@ export default function Quanlycauhoi() {
         <form onSubmit={handleSubmit}>
           <label>
             Question:
-            <input name="question" defaultValue={currentQuestion?.question || ""} required />
+            <input
+              name="question"
+              defaultValue={currentQuestion?.question || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Exam ID:
-            <input name="examId" type="number" defaultValue={currentQuestion?.examId || ""} required />
+            <input
+              name="examId"
+              type="number"
+              defaultValue={currentQuestion?.examId || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Options (comma separated):
-            <input name="options" defaultValue={currentQuestion?.options.join(", ") || ""} required />
+            <input
+              name="options"
+              defaultValue={currentQuestion?.options.join(", ") || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Answer:
-            <input name="answer" defaultValue={currentQuestion?.answer || ""} required />
+            <input
+              name="answer"
+              defaultValue={currentQuestion?.answer || ""}
+              required
+            />
           </label>
           <br />
           <button type="submit">Submit</button>

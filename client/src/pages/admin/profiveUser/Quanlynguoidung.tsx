@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../config/fisabase";
 import { UserType } from "../../../interface/interface";
 
 Modal.setAppElement("#root");
@@ -9,6 +11,12 @@ export default function QuanLyNguoiDung() {
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5; // Adjust the number of users per page as needed
 
   useEffect(() => {
     axios
@@ -51,11 +59,31 @@ export default function QuanLyNguoiDung() {
       .put(`http://localhost:8080/profiveUser/${user.id}`, updatedUser)
       .then(() => {
         setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
-        alert(`Trạng thái người dùng đã được thay đổi thành ${updatedUser.status ? "Active" : "Inactive"}`);
+        alert(
+          `Trạng thái người dùng đã được thay đổi thành ${
+            updatedUser.status ? "Active" : "Inactive"
+          }`
+        );
       })
       .catch((error) => {
-        console.error("Đã xảy ra lỗi khi cập nhật trạng thái người dùng!", error);
+        console.error(
+          "Đã xảy ra lỗi khi cập nhật trạng thái người dùng!",
+          error
+        );
       });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const imageRef = ref(storage, `images/${file.name}`);
+      uploadBytes(imageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setImageUrl(url);
+        });
+      });
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -70,6 +98,7 @@ export default function QuanLyNguoiDung() {
       password: formData.get("password") as string,
       status: formData.get("status") === "true",
       role: formData.get("role") as "ADMIN" | "USER",
+      img: imageUrl,
     };
 
     if (currentUser) {
@@ -94,6 +123,14 @@ export default function QuanLyNguoiDung() {
         });
     }
   };
+
+  // Get current users for pagination
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Function to change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -126,21 +163,22 @@ export default function QuanLyNguoiDung() {
             </tr>
           </thead>
           <tbody className="table-group-divider">
-            {users.length > 0 ? (
-              users.map((user) => (
+            {currentUsers.length > 0 ? (
+              currentUsers.map((user) => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
                   <td>{user.email}</td>
                   <td>{user.password}</td>
                   <td>{user.status ? "Active" : "Inactive"}</td>
-                  <td><button
+                  <td>
+                    <button
                       className="btn-status"
                       onClick={() => handleStatusChange(user)}
                     >
                       Thay đổi trạng thái
-                    </button></td>
+                    </button>
+                  </td>
                   <td>
-                    
                     <button
                       className="btn-edit"
                       onClick={() => handleEditUser(user)}
@@ -158,28 +196,38 @@ export default function QuanLyNguoiDung() {
               ))
             ) : (
               <tr>
-                <td colSpan={5}>No users found</td>
+                <td colSpan={6}>No users found</td>
               </tr>
             )}
           </tbody>
         </table>
+        {/* Pagination */}
+        <div className="pagination">
+          {[...Array(Math.ceil(users.length / usersPerPage)).keys()].map(
+            (number) => (
+              <button key={number} onClick={() => paginate(number + 1)}>
+                {number + 1}
+              </button>
+            )
+          )}
+        </div>
       </div>
       {isModalOpen && (
         <Modal
-        isOpen={isModalOpen} 
-        onRequestClose={() => setIsModalOpen(false)}
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            padding: '20px',
-            width: '400px',
-          },
-        }}
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          style={{
+            content: {
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
+              padding: "20px",
+              width: "400px",
+            },
+          }}
         >
           <h2>
             {currentUser ? "Chỉnh sửa người dùng" : "Thêm mới người dùng"}
@@ -242,6 +290,10 @@ export default function QuanLyNguoiDung() {
                 <option value="ADMIN">Admin</option>
                 <option value="USER">User</option>
               </select>
+            </div>
+            <div>
+              <label>Image</label>
+              <input type="file" name="image" onChange={handleChange} />
             </div>
             <button type="submit">Submit</button>
             <button type="button" onClick={() => setIsModalOpen(false)}>

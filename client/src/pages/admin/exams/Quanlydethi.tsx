@@ -10,6 +10,8 @@ export default function Quanlydethi() {
   const [examSubjects, setExamSubjects] = useState<ExamSubjects[]>([]);
   const [currentExam, setCurrentExam] = useState<Exam | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const examsPerPage = 6; 
 
   useEffect(() => {
     axios
@@ -66,7 +68,7 @@ export default function Quanlydethi() {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       duration: Number(formData.get("duration")),
-      examSubjectId: Number(formData.get("examSubjectId")),
+      examSubject: Number(formData.get("examSubjectId")),
     };
 
     if (currentExam) {
@@ -91,6 +93,12 @@ export default function Quanlydethi() {
         });
     }
   };
+
+  const indexOfLastExam = currentPage * examsPerPage;
+  const indexOfFirstExam = indexOfLastExam - examsPerPage;
+  const currentExams = exams.slice(indexOfFirstExam, indexOfLastExam);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -121,7 +129,7 @@ export default function Quanlydethi() {
             </tr>
           </thead>
           <tbody id="tbody" className="table-group-divider">
-            {exams.map((exam) => (
+            {currentExams.map((exam) => (
               <tr key={exam.id}>
                 <td>{exam.id}</td>
                 <td>{exam.title}</td>
@@ -136,6 +144,15 @@ export default function Quanlydethi() {
             ))}
           </tbody>
         </table>
+        <div className="pagination">
+          {[...Array(Math.ceil(exams.length / examsPerPage)).keys()].map(
+            (number) => (
+              <button key={number} onClick={() => paginate(number + 1)}>
+                {number + 1}
+              </button>
+            )
+          )}
+        </div>
       </div>
       <Modal
         isOpen={isModalOpen}
@@ -157,37 +174,44 @@ export default function Quanlydethi() {
         <form onSubmit={handleSubmit}>
           <label>
             Tên đề thi:
-            <input name="title" defaultValue={currentExam?.title || ""} required />
+            <input
+              name="title"
+              defaultValue={currentExam?.title || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Mô tả:
-            <input name="description" defaultValue={currentExam?.description || ""} required />
+            <input
+              name="description"
+              defaultValue={currentExam?.description || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Thời gian (phút):
-            <input name="duration" type="number" defaultValue={currentExam?.duration || ""} required />
+            <input
+              name="duration"
+              type="number"
+              defaultValue={currentExam?.duration || ""}
+              required
+            />
           </label>
           <br />
           <label>
             Môn thi:
             <select
               name="examSubjectId"
-              defaultValue={currentExam?.examSubjectId || ""}
+              defaultValue={currentExam?.examSubject || ""}
               required
             >
-              <option value="">Toán </option>
-              <option value="">Ngữ Văn</option>
-              <option value="">GDCD</option>
-              <option value="">Tiếng Anh</option>
-              <option value="">Lịch sử </option>
-              <option value="">Địa lý </option>
-              {/* {examSubjects.map((subject) => (
+              {examSubjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>
                   {subject.title}
                 </option>
-              ))} */}
+              ))}
             </select>
           </label>
           <br />

@@ -37,39 +37,71 @@ function Login() {
         }
     };
 
-    const handleSignUp = async (e) => {
-        e.preventDefault();
-        console.log({ name, email, password, terms });
+   const handleSignUp = async (e) => {
+     e.preventDefault();
+     console.log({ firstName, lastName, email, password, terms });
 
-        
-        const response = await axios.get(`http://localhost:8080/profiveUser?email=${email}`);
-            if(response.data.length) {
-                alert('Email hoặc password đã tồn tại. Vui lòng đăng nhập hoặc đăng kí lại khác.');
-            } else  {
-                await axios.post("http://localhost:8080/profiveUser", { firstName,lastName, email, password, status:true });
-                alert('Đăng ký thành công! Vui lòng đăng nhập.');
-                setIsSignUp(false);
-            }
-    };
+     if (password.length < 6) {
+       alert("Mật khẩu phải có ít nhất 6 ký tự.");
+       return;
+     }
+
+     try {
+       const response = await axios.get(
+         `http://localhost:8080/profiveUser?email=${email}`
+       );
+       if (response.data.length) {
+         alert(
+           "Email hoặc password đã tồn tại. Vui lòng đăng nhập hoặc đăng kí lại khác."
+         );
+       } else {
+         await axios.post("http://localhost:8080/profiveUser", {
+           firstName,
+           lastName,
+           email,
+           password,
+           status: true,
+         });
+         alert("Đăng ký thành công! Vui lòng đăng nhập.");
+         setIsSignUp(false);
+       }
+     } catch (error) {
+       console.error("Error signing up:", error);
+       alert("Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.");
+     }
+   };
+
 
     const handleSignIn = async (e) => {
-        e.preventDefault();
-        console.log({ email, password });
+      e.preventDefault();
+      console.log({ email, password });
 
-        try {
-            const response = await axios.get(`http://localhost:8080/profiveUser?email=${email}&password=${password}`);
-            if(response.data) {
-                localStorage.setItem('token', response.data.id);
-                navigate('/');    
-                alert('Đăng nhập thành công');
-            } else {
-                alert('Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.');
-            }
-        } catch (error) {
-            console.error("Error signing in:", error);
-            alert('Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.');
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/profiveUser?email=${email}&password=${password}`
+        );
+        const user = response.data;
+        if (user) {
+          if (!user.status) {
+            alert("Tài khoản của bạn đã bị khóa.");
+            return;
+          }
+          localStorage.setItem("token", user.id);
+          if (user.role === "ADMIN") {
+            navigate("/admin"); 
+          } else {
+            navigate("/"); 
+          }
+          alert("Đăng nhập thành công");
+        } else {
+          alert("Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.");
         }
+      } catch (error) {
+        console.error("Error signing in:", error);
+        alert("Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.");
+      }
     };
+
 
     return (
         <div className="app">

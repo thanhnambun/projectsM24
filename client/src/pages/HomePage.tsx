@@ -5,23 +5,37 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Carousel from "react-bootstrap/Carousel";
 import HeaderHomepage from "./HeaderHomepage";
 import "./HomePage.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const ITEMS_PER_PAGE = 9;
 
 export default function HomePage() {
   const [courses, setCourses] = useState<Courses[]>([]);
+  const [currentPage, setCurrentPage] = useState(1); // Current page of courses
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/courses")
       .then((response) => {
-        console.log(response.data);
-        
         setCourses(response.data);
       })
       .catch((error) => {
         console.error("Error fetching courses:", error);
       });
   }, []);
+
+  // Calculate courses to display based on current page
+  const indexOfLastCourse = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstCourse = indexOfLastCourse - ITEMS_PER_PAGE;
+  const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const handleCardClick = (id: number) => {
+    navigate(`/luyenthi/${id}`);
+  };
+
+  // Pagination click handler
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -57,7 +71,7 @@ export default function HomePage() {
             />
           </Carousel.Item>
         </Carousel>
-        {/* Phần thân */}
+        {/* Main section */}
         <div
           id="main"
           style={{ marginTop: "-1px", paddingBottom: 80, minHeight: 700 }}
@@ -70,25 +84,49 @@ export default function HomePage() {
                 sinh giúp các em tự tin đứng top chỉ với 30 phút học mỗi ngày.
               </div>
             </h1>
-              <div className="full">
-                  {courses.map((course) => (
-                      <div key={course.id} className="subject-card">
-                      <div className="subject-item">
-                      <img
-                        src={course.img} 
-                        alt={course.title} 
-                        className="subject-image"
-                      />
-                      <div className="subject-info">
-                        <h2>
-                          <Link to={`/${course.title}`}>{course.title}</Link>
-                          </h2> 
-                        <p>{course.description}</p> 
-                      </div>
+            <div className="full">
+              {/* Render courses */}
+              {currentCourses.map((course) => (
+                <div
+                  key={course.id}
+                  className="subject-card"
+                  onClick={() => handleCardClick(course.id)}
+                >
+                  <div className="subject-item">
+                    <img
+                      src={course.img}
+                      alt={course.title}
+                      className="subject-image"
+                    />
+                    <div className="subject-info">
+                      <h2>{course.title}</h2>
+                      <p>{course.description}</p>
                     </div>
                   </div>
-                  ))}
                 </div>
+              ))}
+            </div>
+            {/* Pagination */}
+            <ul className="pagination">
+              {Array.from(
+                { length: Math.ceil(courses.length / ITEMS_PER_PAGE) },
+                (_, i) => (
+                  <li
+                    key={i}
+                    className={`page-item ${
+                      currentPage === i + 1 ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      onClick={() => paginate(i + 1)}
+                      className="page-link"
+                    >
+                      {i + 1}
+                    </button>
+                  </li>
+                )
+              )}
+            </ul>
           </div>
         </div>
       </body>

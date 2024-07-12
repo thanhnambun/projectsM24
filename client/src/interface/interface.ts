@@ -17,6 +17,7 @@ export interface UserType {
   export interface ExamSubjects{
     id:number,
     title:string,
+    img:string,
     description:string,
     courseId : number,
   }
@@ -25,7 +26,7 @@ export interface UserType {
     title:string,
     description:string,
     duration:number,
-    examSubjectId : number,
+    examSubject : number,
   }
   export interface Question{
     id:number,

@@ -1,0 +1,51 @@
+.main {
+    margin-top: -1px;
+    padding-bottom: 80px;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.subject-page {
+    padding: 20px 0;
+}
+
+.subject {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding: 0 24px;
+    border-radius: 20px;
+    background-color: #fff7f2;
+}
+
+.examSubject {
+    width: max-content;
+    height: 64px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+}
+
+.title-topic {
+    margin-top: 30px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.title-h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2ca6eb
+}
+
+.summary {
+    font-size: 14px;
+    color: #5a6173;
+}
